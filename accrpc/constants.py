@@ -1,7 +1,7 @@
 TITLE = 'Assetto Corsa Competizione - Discord Rich Presence'
 AUTHOR = 'Viksen'
 GITHUB = 'https://github.com/ViksenTV'
-REPO_URL = "https://api.github.com/ViksenTV/acc_rpc"
+REPO_URL = "https://api.github.com/ViksenTV/acc_rpc/releases"
 VERSION = '0.3'
 GAME = 'Assetto Corsa Competizione'
 
