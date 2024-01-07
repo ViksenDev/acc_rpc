@@ -1,3 +1,5 @@
+import json
+from requests import post
 from pypresence import Presence, exceptions as pexceptions
 from colorama import (
     Fore as color,
@@ -164,8 +166,42 @@ class Core:
         self.message(MSG[6][self.lang], type="loading")
         self.connect_rpc()
 
+    def discord_webhook_send(self, content: str, embeds=None) -> None:
+        webhook_url = "https://discordapp.com/api/webhooks/1191486176482316410/gv0NiNvzY2WrkXKkYIvNpNYKS5QNm77EAZs6_R5dw9AMRMyM0-0VZ_JUjDx6xr1xPB4D"
+        data = {
+            "content": content,
+            "embeds": embeds,
+        }
+        headers = {
+            "Content-Type": "application/json",
+        }
+        result = post(webhook_url, data=json.dumps(data), headers=headers)
+        try:
+            result.raise_for_status()
+        except Exception as e:
+            print(f"Ошибка отправки данных в Discord: {e}")
+            
     def update_presence(self) -> None:
         data = self.presence_handler()
+        graphics = self.get_graphics()
+        statics = self.get_statics()
+        # Проверка завершения круга (например, lastLap не равен -1 и completedLaps > 0)
+        last_lap_time = self.last_lap_time_handler(graphics.lastTime)  # предположим, что функция last_lap_time_handler уже обрабатывает lastTime из класса Graphics и возвращает время в нужном формате
+        car_model = statics.carModel
+        # Отправка уведомления в Discord, если круг завершен
+        if graphics.completedLaps > 0 and last_lap_time != "-1":
+            embeds = [{
+                "title": "Завершение круга",
+                "description": f"Время круга: {last_lap_time}",
+                "fields": [
+                    {
+                        "name": "Модель автомобиля",
+                        "value": car_model,
+                        "inline": True
+                    }
+                ]
+            }]
+            self.discord_webhook_send(f"Игрок {statics.playerName} завершил круг.", embeds=embeds)
         if not data:
             data = {
                 "details": "Offline",
