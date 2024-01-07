@@ -167,7 +167,7 @@ class Core:
         self.connect_rpc()
 
     def discord_webhook_send(self, content: str, embeds=None) -> None:
-        webhook_url = "https://discordapp.com/api/webhooks/1191486176482316410/gv0NiNvzY2WrkXKkYIvNpNYKS5QNm77EAZs6_R5dw9AMRMyM0-0VZ_JUjDx6xr1xPB4D"
+        webhook_url = "YOUR_WEBHOOK"
         data = {
             "content": content,
             "embeds": embeds,
